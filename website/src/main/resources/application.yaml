@@ -1,3 +1,7 @@
 spring:
   application:
     name: website
+
+
+server:
+  port: 9000
