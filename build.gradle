@@ -1,0 +1,51 @@
+plugins {
+    // 루트에서는 버전만 명시하고, 실제 적용(apply)은 하위 모듈에서 하도록 false로 둡니다.
+    id 'org.springframework.boot' version '4.0.6' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+}
+
+ext {
+    lombokVersion = '1.18.46'
+}
+
+// 모든 하위 모듈(queue-server, website, common)에 공통으로 적용될 설정입니다.
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.ticketing'
+    version = '0.0.1-SNAPSHOT'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    // 3개 모듈 모두에서 쓰는 필수 라이브러리(Lombok, 테스트 도구 등)만 여기에 둡니다.
+    dependencies {
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+configure([project(':queue-server'), project(':website')]) {
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+}

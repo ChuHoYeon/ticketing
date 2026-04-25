@@ -1,0 +1,5 @@
+rootProject.name = 'ticketing'
+
+include 'queue-server'
+include 'website'
+include 'common'

@@ -1,0 +1,7 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    // 향후 JWT 관련 라이브러리나 공통 유틸리티가 생기면 여기에 추가합니다.
+}
