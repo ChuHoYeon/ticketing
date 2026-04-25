@@ -1,0 +1,21 @@
+# Linux deploy safe defaults
+* text=auto
+
+# Scripts must be LF
+gradlew text eol=lf
+*.sh text eol=lf
+
+# Windows scripts should be CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Configs are safer as LF
+*.yml text eol=lf
+*.yaml text eol=lf
+*.properties text eol=lf
+*.env text eol=lf
+*.sql text eol=lf
+
+# Java binary files (텍스트로 읽지 않음)
+*.class binary
+*.jar binary
