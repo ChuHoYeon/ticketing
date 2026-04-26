@@ -1,7 +1,6 @@
 dependencies {
 	// MVC, Thymeleaf 등 예매 웹 서버에만 필요한 것들
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	// common 모듈 사용
 	implementation project(':common')
