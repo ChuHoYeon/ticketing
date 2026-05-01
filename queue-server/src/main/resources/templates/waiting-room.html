@@ -41,6 +41,7 @@
         function fetchWaitingRank() {
             const queue = '[[${queue}]]';
             const userId = '[[${userId}]]';
+            const redirectUrl = '[[${redirectUrl}]]';
             const queryParam = new URLSearchParams({queue: queue, user_id: userId});
             fetch('api/v1/queue/rank?' + queryParam)
                 .then(response => response.json())
@@ -51,8 +52,7 @@
                                 document.querySelector('#number').innerHTML = 0;
                                 document.querySelector('#updated').innerHTML = new Date().toString();
 
-                                const newUrl = window.location.origin + window.location.pathname + window.location.search;
-                                window.location.href = newUrl;
+                                window.location.href = redirectUrl;
                             })
                             .catch(error => console.error(error));
                         return;

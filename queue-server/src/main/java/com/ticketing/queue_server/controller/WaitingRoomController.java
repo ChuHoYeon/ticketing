@@ -57,6 +57,7 @@ public class WaitingRoomController {
                                         .modelAttribute("number", rank)
                                         .modelAttribute("userId", userId)
                                         .modelAttribute("queue", queue)
+                                        .modelAttribute("redirectUrl", redirectUrl)
                                         .build()
                                 )
                 );
