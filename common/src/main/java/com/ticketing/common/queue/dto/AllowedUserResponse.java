@@ -1,4 +1,4 @@
-package com.ticketing.queue_server.dto;
+package com.ticketing.common.queue.dto;
 
 /**
  * 사용자 진입 가능 여부 조회 API 응답 DTO

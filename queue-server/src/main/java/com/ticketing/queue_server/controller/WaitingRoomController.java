@@ -10,6 +10,8 @@ import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import static com.ticketing.common.queue.QueueConstants.userQueueTokenCookieName;
+
 @Controller
 @RequiredArgsConstructor
 public class WaitingRoomController {
@@ -41,7 +43,7 @@ public class WaitingRoomController {
                                            @RequestParam(name = "user_id") Long userId,
                                            @RequestParam(name = "redirect_url") String redirectUrl,
                                            ServerWebExchange exchange) {
-        String key = "user-queue-%s-token".formatted(queue);
+        String key = userQueueTokenCookieName(queue);
         HttpCookie cookieValue = exchange.getRequest().getCookies().getFirst(key);
         String token = cookieValue == null ? "" : cookieValue.getValue();
 

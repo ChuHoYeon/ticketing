@@ -1,5 +1,6 @@
 package com.ticketing.website;
 
+import com.ticketing.common.queue.dto.AllowedUserResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static com.ticketing.common.queue.QueueConstants.userQueueTokenCookieName;
+
 @Controller
 public class SampleController {
     RestTemplate restTemplate = new RestTemplate();
@@ -23,7 +26,7 @@ public class SampleController {
                         HttpServletRequest request) {
 
         Cookie[] cookies = request.getCookies();
-        String cookieName = "user-queue-%s-token".formatted(queue);
+        String cookieName = userQueueTokenCookieName(queue);
         String token = "";
         if (cookies != null) {
             Optional<Cookie> cookie = Arrays.stream(cookies).filter(i -> i.getName().equalsIgnoreCase(cookieName)).findFirst();
@@ -50,5 +53,4 @@ public class SampleController {
         return "index";
     }
 
-    public record AllowedUserResponse(Boolean allowed) {}
 }

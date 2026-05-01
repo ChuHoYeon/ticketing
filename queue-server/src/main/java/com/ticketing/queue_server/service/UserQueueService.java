@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
+import static com.ticketing.common.queue.QueueTokenUtils.generateSHA256Token;
 import static com.ticketing.queue_server.exception.ErrorCode.QUEUE_ALREADY_REGISTERED_USER;
 
 @Slf4j
@@ -144,21 +142,7 @@ public class UserQueueService {
      * @return SHA-256 기반의 사용자 진입 토큰입니다.
      */
     public Mono<String> generateToken(final String queue, final Long userId) {
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-            var input = "user-queue-%s-%d".formatted(queue, userId);
-            byte[] encodeHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-
-            StringBuilder hexString = new StringBuilder();
-            for (byte aByte : encodeHash) {
-                hexString.append(String.format("%02x", aByte));
-            }
-            return Mono.just(hexString.toString());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
+        return Mono.just(generateSHA256Token(queue, userId));
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.ticketing.queue_server.controller;
 
+import com.ticketing.common.queue.dto.AllowedUserResponse;
 import com.ticketing.queue_server.dto.AllowUserResponse;
-import com.ticketing.queue_server.dto.AllowedUserResponse;
 import com.ticketing.queue_server.dto.RankNumberResponse;
 import com.ticketing.queue_server.dto.RegisterUserResponse;
 import com.ticketing.queue_server.service.UserQueueService;
@@ -12,6 +12,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+
+import static com.ticketing.common.queue.QueueConstants.USER_QUEUE_TOKEN_TTL_SECONDS;
+import static com.ticketing.common.queue.QueueConstants.userQueueTokenCookieName;
 
 @RestController
 @RequestMapping("/api/v1/queue")
@@ -137,8 +140,8 @@ public class UserQueueController {
         return Mono.defer(() -> userQueueService.generateToken(queue, userId))
                 .map(token -> {
                     exchange.getResponse().addCookie(
-                            ResponseCookie.from("user-queue-%s-token".formatted(queue), token)
-                                    .maxAge(Duration.ofSeconds(300))
+                            ResponseCookie.from(userQueueTokenCookieName(queue), token)
+                                    .maxAge(Duration.ofSeconds(USER_QUEUE_TOKEN_TTL_SECONDS))
                                     .path("/")
                                     .build()
                     );
